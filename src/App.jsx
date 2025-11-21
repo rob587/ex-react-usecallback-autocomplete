@@ -10,14 +10,19 @@ function App() {
       return;
     }
 
-    const url = `http://localhost:3333/products?search=${inputValue}`;
+    const timeoutId = setTimeout(() => {
+      const url = `http://localhost:3333/products?search=${inputValue}`;
+      fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          setData(data);
+        });
+    }, 500);
 
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setData(data);
-      });
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, [inputValue]);
 
   return (
